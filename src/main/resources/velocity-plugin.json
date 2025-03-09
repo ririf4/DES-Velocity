@@ -1,0 +1,8 @@
+{
+  "id": "des-proxy",
+  "name": "DES Proxy",
+  "version": "1.0.0",
+  "main": "net.ririfa.des.proxy.DES",
+  "description": "The Original Plugin",
+  "authors": ["RiriFa"]
+}
