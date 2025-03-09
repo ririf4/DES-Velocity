@@ -13,4 +13,5 @@ repositories {
 
 dependencies {
 	compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+	implementation("net.ririfa:langman:1.4.3")
 }

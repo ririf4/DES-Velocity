@@ -3,12 +3,15 @@ package net.ririfa.des.proxy
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
 import com.velocitypowered.api.event.player.ServerPreConnectEvent
+import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.proxy.ProxyServer
 import com.velocitypowered.api.proxy.server.RegisteredServer
 import net.kyori.adventure.text.Component
+import net.ririfa.des.proxy.translation.DESProxyTranslation.PreparingToChangeServer
+import net.ririfa.des.proxy.translation.adapt
 import org.slf4j.Logger
 import java.nio.file.Path
 import java.util.UUID
@@ -17,8 +20,8 @@ import javax.inject.Inject
 
 @Plugin(
 	id = "des-proxy",
-	name = "DES-Proxy",
-	description = "A",
+	name = "DES Proxy",
+	description = "Proxy management plugin developed for DES servers.",
 	version = "1.0.0",
 	authors = ["RiriFa"],
 )
@@ -31,6 +34,11 @@ class DES @Inject constructor(
 	private val pendingTransfers: MutableMap<UUID, RegisteredServer> = mutableMapOf()
 
 	@Subscribe
+	fun onProxyInitialization(event: ProxyInitializeEvent) {
+
+	}
+
+	@Subscribe
 	fun onPreTransfer(event: ServerPreConnectEvent) {
 		val player = event.player
 		val targetServer = event.result.server.orElse(null) ?: return
@@ -38,11 +46,11 @@ class DES @Inject constructor(
 		event.result = ServerPreConnectEvent.ServerResult.denied()
 		pendingTransfers[player.uniqueId] = targetServer
 
-		player.sendMessage(Component.text("移動先サーバーに行く前に、処理中です。少しお待ちください…"))
+		player.sendMessage(player.adapt().getMessage(PreparingToChangeServer))
 
 		CompletableFuture.runAsync {
 			try {
-
+				// TODO: ここで処理する
 			} catch (e: InterruptedException) {
 				e.printStackTrace()
 			}
