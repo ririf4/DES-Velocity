@@ -40,8 +40,11 @@ class DES @Inject constructor(
 
 	@Subscribe
 	fun onPreTransfer(event: ServerPreConnectEvent) {
+		// 早期リターン
+		if (event.previousServer == null) return
+
 		val player = event.player
-		val targetServer = event.result.server.orElse(null) ?: return
+		val targetServer: RegisteredServer = event.result.server.orElse(null) ?: return
 
 		event.result = ServerPreConnectEvent.ServerResult.denied()
 		pendingTransfers[player.uniqueId] = targetServer
@@ -50,7 +53,7 @@ class DES @Inject constructor(
 
 		CompletableFuture.runAsync {
 			try {
-				// TODO: ここで処理する
+
 			} catch (e: InterruptedException) {
 				e.printStackTrace()
 			}
